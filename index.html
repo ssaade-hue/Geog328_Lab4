@@ -16,16 +16,20 @@
         /* CSS styles for heading and paragraphs */
         h2,
         h3 {
-            margin: 10px;
-            font-size: 18px;
+            margin: 12px 0;
+            font-size: 20px;
+            font-weight: bold;
         }
 
         h3 {
-            font-size: 16px;
+            font-size: 18px;
+            color: #2c3e50;
         }
 
         p {
-            margin: 10px;
+            margin: 8px 0;
+            font-size: 15px;
+            line-height: 1.4;
         }
 
         /**
@@ -49,21 +53,23 @@
             position: absolute;
             bottom: 0;
             left: 0;
-            background: rgba(255, 255, 255, 0.8);
+            background: rgba(255, 255, 255, 0.9);
             border-style: solid;
-            border-width: 1px;
-            border-color: rgba(0, 0, 0, 0.2);
+            border-width: 2px;
+            border-color: rgba(0, 0, 0, 0.3);
             margin-left: 20px;
             font-family: Arial, sans-serif;
             overflow: auto;
-            border-radius: 3px;
+            border-radius: 8px;
+            padding: 15px;
+            font-size: 16px;
         }
 
         #features {
             top: 0;
-            height: 100px;
+            height: 280px;
             margin-top: 20px;
-            width: 250px;
+            width: 450px;
         }
 
         #legend {
@@ -97,7 +103,7 @@
         <p><strong>Data from October 25, 2021</strong></p>
         <p>This map shows COVID-19 case rates per 10,000 people across Washington State counties. Darker colors indicate higher case rates.</p>
         <div id='text-description'>
-            <p>Hover over a county!</p>
+            <p>Hover over a county to see detailed COVID-19 statistics!</p>
         </div>
     </div>
     <div class='map-overlay' id='legend'></div>
@@ -109,8 +115,8 @@
             const map = new maplibregl.Map({
                 container: 'map', // container ID
                 style: 'https://demotiles.maplibre.org/style.json', // Free MapLibre style
-                zoom: 7, // starting zoom
-                center: [-120.5, 47.5] // starting center - Washington State
+                zoom: 6, // starting zoom - zoomed out to show more surrounding area
+                center: [-123.0, 47.5] // starting center - shifted west so WA appears left of center
             });
             
             console.log('Map initialized successfully');
@@ -212,8 +218,12 @@
                             layers: ['state_data_layer']
                         });
                         document.getElementById('text-description').innerHTML = state.length ?
-                            `<h3>${state[0].properties.name}</h3><p><strong><em>${state[0].properties.casePer10k}</strong> cases per 10,000 people</em></p>` :
-                            `<p>Hover over a county!</p>`;
+                            `<h3>${state[0].properties.name} County</h3>
+                             <p><strong>📈 Cases:</strong> ${state[0].properties.casePer10k} per 10,000 people</p>
+                             <p><strong>💀 Deaths:</strong> ${state[0].properties.deathPer10k} per 10,000 people</p>
+                             <p><strong>💉 Fully Vaccinated:</strong> ${state[0].properties.fullyVaxPer10k} per 10,000 people</p>
+                             <p><em>Data from October 25, 2021</em></p>` :
+                            `<p>Hover over a county to see detailed COVID-19 statistics!</p>`;
                     });
                     
                 } catch (error) {
@@ -316,8 +326,12 @@
                     layers: ['state_data_layer']
                 });
                 document.getElementById('text-description').innerHTML = state.length ?
-                    `<h3>${state[0].properties.name}</h3><p><strong><em>${state[0].properties.casePer10k}</strong> cases per 10,000 people</em></p>` :
-                    `<p>Hover over a county!</p>`;
+                    `<h3>${state[0].properties.name} County</h3>
+                     <p><strong>📈 Cases:</strong> ${state[0].properties.casePer10k} per 10,000 people</p>
+                     <p><strong>💀 Deaths:</strong> ${state[0].properties.deathPer10k} per 10,000 people</p>
+                     <p><strong>💉 Fully Vaccinated:</strong> ${state[0].properties.fullyVaxPer10k} per 10,000 people</p>
+                     <p><em>Data from October 25, 2021</em></p>` :
+                    `<p>Hover over a county to see detailed COVID-19 statistics!</p>`;
             });
         }
     </script>
